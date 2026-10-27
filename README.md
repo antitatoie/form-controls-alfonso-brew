@@ -59,6 +59,9 @@ form-controls-alfonso-brew/
 ---
 
 ## Features and Compliance
-* **Accessibility (WCAG):** Semantic `<label>` association, keyboard navigation, focus indicators, and `aria-describedby` error states.
-* **Validation:** Immediate feedback on blur, format regex enforcement, and submit prevention on invalid inputs.
-* **Data Handling:** Dynamic reflection in UI and persistent storage via `localStorage`.
+* **Portal navigation:** Select forms with the tabs, or use the arrow keys, Home, and End while a tab is focused.
+* **Form actions:** Each form can be submitted or reset. The header's sample-data and error-state buttons work on the currently selected form.
+* **Validation:** Field feedback appears on blur and submit; cross-field checks cover pricing, checkout totals and discounts, feedback selections, and audit filter ranges.
+* **POS interaction:** Selecting a menu item, quantity, or discount updates the subtotal and amount due. Product image selection displays a preview.
+* **Data handling:** Products, completed orders, and feedback entries are saved in browser `localStorage` and shown in their ledgers. The audit form filters saved catalog products.
+* **Local demo limitation:** Data and PIN-format checks run in the browser only; this project does not provide a server, shared database, or real auditor authentication.
