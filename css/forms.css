@@ -1,0 +1,57 @@
+/* ==========================================================================
+   Alfonso Brew — Form Controls, Validation & Accessibility Styles
+   ========================================================================== */
+
+/* Form Card Container */
+.form-card {
+  background: var(--color-cream-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  border: 1px solid var(--color-border);
+  margin-bottom: 2rem;
+}
+
+/* Form Groups & Labels */
+.form-group {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+  color: var(--color-espresso);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.required-badge {
+  color: var(--color-error);
+  font-weight: bold;
+}
+
+/* Helper Text */
+.form-hint {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-top: 0.25rem;
+}
+
+/* Validation Feedback Container */
+.form-error {
+  display: none;
+  font-size: 0.825rem;
+  color: var(--color-error);
+  margin-top: 0.35rem;
+  font-weight: 500;
+}
+
+.form-error.visible {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
