@@ -1,5 +1,5 @@
 /**
- * Alfonso Brew — Form Portal Interactions
+ * Alfonso Brew — Form Portal Controller, Tab Navigation & Interactive State
  */
 
 import { DataHandler } from './data-handler.js';
@@ -13,15 +13,15 @@ const formTypes = {
 
 const demoValues = {
   'product-form': {
-    product_name: 'Alfonso Signature Spanish Latte',
-    product_sku: 'PRD-ESP-001',
+    product_name: 'Alfonso Caramel Macchiato',
+    product_sku: 'PRD-ESP-005',
     category: 'Espresso',
-    price: '155',
-    unit_cost: '52.50',
+    price: '165',
+    unit_cost: '54.00',
     prep_time: '4',
     serving_temp: 'Hot and Iced',
-    addons: ['Extra Espresso Shot', 'Oat Milk Sub'],
-    description: 'Smooth espresso with milk and a balanced caramel finish.',
+    addons: ['Extra Espresso Shot', 'Vanilla Bean Syrup', 'Caramel Drizzle'],
+    description: 'Velvety steamed milk marked with rich Cavite espresso and house-made vanilla caramel.',
     is_available: true,
   },
   'checkout-form': {
@@ -31,12 +31,12 @@ const demoValues = {
     order_type: 'Dine-In',
     pickup_time: '10:30',
     selected_beverage: 'Signature Spanish Latte',
-    order_qty: '1',
-    discount_type: 'None',
-    discount_id_number: '',
+    order_qty: '2',
+    discount_type: 'Senior Citizen (20%)',
+    discount_id_number: 'OSCA-44821',
     payment_method: 'Cash',
-    amount_tendered: '200',
-    special_instructions: 'Less ice, please.',
+    amount_tendered: '300',
+    special_instructions: 'One hot in ceramic mug, one iced with 50% sweetness.',
     loyalty_optin: true,
   },
   'feedback-form': {
@@ -47,20 +47,20 @@ const demoValues = {
     overall_rating: '5 - Exceptional',
     items_tried: ['Espresso Beverages', 'Artisanal Pastries'],
     ambiance_score: '9',
-    review_comments: 'Excellent coffee, friendly service, and a comfortable atmosphere.',
+    review_comments: 'Excellent coffee roast, warm barista hospitality, and clean study tables.',
     allow_followup: true,
   },
   'filter-form': {
-    search_keyword: '',
-    audit_category: 'All',
-    date_from: '',
-    date_to: '',
-    price_min: '',
-    price_max: '',
+    search_keyword: 'Latte',
+    audit_category: 'Espresso',
+    date_from: '2026-10-01',
+    date_to: todayLocal(),
+    price_min: '100',
+    price_max: '300',
     stock_status: 'All',
-    visible_columns: ['SKU Code', 'Unit Cost', 'Gross Margin'],
-    sort_by: 'Newest First',
-    auditor_pin: '1234',
+    visible_columns: ['SKU Code', 'Unit Cost', 'Gross Margin', 'Prep Time'],
+    sort_by: 'margin-desc',
+    auditor_pin: 'AUD2026',
   },
 };
 
@@ -128,7 +128,7 @@ function setControlValue(form, name, value) {
 
   if (controls[0].type === 'checkbox' && controls.length > 1) {
     controls.forEach((control) => {
-      control.checked = value.includes(control.value);
+      control.checked = Array.isArray(value) && value.includes(control.value);
     });
   } else if (controls[0].type === 'radio') {
     controls.forEach((control) => {
@@ -148,27 +148,49 @@ function fillDemo(form) {
   ValidationRules.clearErrors(form);
   form.dataset.submitted = 'false';
   Object.entries(values).forEach(([name, value]) => setControlValue(form, name, value));
-  form.querySelectorAll('input, select, textarea').forEach((control) => {
-    control.dispatchEvent(new Event('input', { bubbles: true }));
-    control.dispatchEvent(new Event('change', { bubbles: true }));
-  });
   updateDerivedFields(form);
-  showStatus('Sample values are ready. Review them, then submit the form to save.', 'success');
+  form.querySelectorAll('.form-range').forEach(updateRangeOutput);
+  ValidationRules.validateForm(form);
+  showStatus('Sample values populated and validated. Submit the form to test data handling.', 'success');
 }
 
 function triggerErrors(form) {
   ValidationRules.clearErrors(form);
   form.dataset.submitted = 'true';
+
   form.querySelectorAll('input:not([type="hidden"]):not([type="range"]):not([type="file"]), select, textarea')
     .forEach((control) => {
       if (control.type === 'checkbox' || control.type === 'radio') control.checked = false;
       else if (control.type !== 'submit' && control.type !== 'reset' && control.type !== 'button') control.value = '';
     });
-  const discount = form.elements.discount_type;
-  if (discount) discount.value = 'None';
+
+  if (form.id === 'product-form') {
+    setControlValue(form, 'product_sku', 'invalid-sku');
+    setControlValue(form, 'price', '120');
+    setControlValue(form, 'unit_cost', '150');
+    setControlValue(form, 'description', 'Too short');
+  } else if (form.id === 'checkout-form') {
+    setControlValue(form, 'customer_email', 'not-an-email');
+    setControlValue(form, 'customer_phone', '12345');
+    setControlValue(form, 'selected_beverage', 'Signature Spanish Latte');
+    setControlValue(form, 'order_qty', '2');
+    setControlValue(form, 'discount_type', 'Senior Citizen (20%)');
+    setControlValue(form, 'discount_id_number', '');
+    setControlValue(form, 'amount_tendered', '50');
+  } else if (form.id === 'feedback-form') {
+    setControlValue(form, 'reviewer_email', 'invalid@');
+    setControlValue(form, 'review_comments', 'Short');
+  } else if (form.id === 'filter-form') {
+    setControlValue(form, 'date_from', '2026-10-28');
+    setControlValue(form, 'date_to', '2026-10-01');
+    setControlValue(form, 'price_min', '600');
+    setControlValue(form, 'price_max', '150');
+    setControlValue(form, 'auditor_pin', '12');
+  }
+
   updateDerivedFields(form);
   ValidationRules.validateForm(form);
-  showStatus('Error-state preview: required values are missing. Correct the fields before submitting.', 'error');
+  showStatus('Validation error states triggered. Review the field-level error alerts below.', 'error');
 }
 
 function formValues(form) {
@@ -202,7 +224,7 @@ function orderTotals(form) {
   const gross = Number(item?.selectedOptions[0]?.dataset.price || 0) * quantity;
   const rate = Number(form.elements.discount_type.selectedOptions[0]?.dataset.rate || 0);
   const discount = gross * rate;
-  return { gross, discount, net: gross - discount };
+  return { gross, discount, net: Math.max(0, gross - discount) };
 }
 
 function updateOrderSummary(form) {
@@ -210,22 +232,13 @@ function updateOrderSummary(form) {
   document.getElementById('summary-gross').textContent = DataHandler.currency.format(totals.gross);
   document.getElementById('summary-discount').textContent = DataHandler.currency.format(totals.discount);
   document.getElementById('summary-net').textContent = DataHandler.currency.format(totals.net);
-
-  const tendered = form.elements.amount_tendered;
-  if (tendered.value) {
-    tendered.setCustomValidity(Number(tendered.value) < totals.net
-      ? `Amount tendered must be at least ${DataHandler.currency.format(totals.net)}.`
-      : '');
-  } else {
-    tendered.setCustomValidity('');
-  }
 }
 
 function updateDiscountRequirement(form) {
   const discount = form.elements.discount_type.value;
   const id = form.elements.discount_id_number;
   const requiredBadge = document.getElementById('discount-id-req');
-  const required = discount !== 'None';
+  const required = Boolean(discount && discount !== 'None');
   id.required = required;
   id.setAttribute('aria-required', String(required));
   requiredBadge.hidden = !required;
@@ -311,7 +324,7 @@ function createRecord(form, type) {
     record.discount_total = totals.discount.toFixed(2);
     record.net_total = totals.net.toFixed(2);
     record.change_due = (Number(record.amount_tendered) - totals.net).toFixed(2);
-    record.transaction_number = `TXN-${timestamp.getTime()}`;
+    record.transaction_number = `TXN-AB-${String(timestamp.getTime()).slice(-5)}`;
     form.elements.transaction_number.value = record.transaction_number;
   }
 
@@ -327,7 +340,7 @@ function submitForm(form) {
     event.preventDefault();
     form.dataset.submitted = 'true';
     if (!ValidationRules.validateForm(form)) {
-      showStatus('Please correct the highlighted fields before continuing.', 'error');
+      showStatus('Submission prevented: please resolve the highlighted validation errors.', 'error');
       return;
     }
 
@@ -335,21 +348,53 @@ function submitForm(form) {
       const values = formValues(form);
       const results = DataHandler.filterProducts(values);
       DataHandler.renderFilteredProducts(results, values.visible_columns || []);
-      showStatus(`${results.length} catalog item${results.length === 1 ? '' : 's'} match the selected filters.`, 'success');
+      showStatus(`${results.length} catalog item${results.length === 1 ? '' : 's'} matched your audit criteria.`, 'success');
       return;
     }
 
     try {
       const record = createRecord(form, type);
       DataHandler.saveRecord(type, record);
-      const label = type === 'product' ? 'Product' : type === 'checkout' ? 'Order' : 'Feedback';
+      const label = type === 'product'
+        ? `Product "${record.product_name}"`
+        : type === 'checkout'
+          ? `Order ${record.transaction_number} for ${record.customer_name}`
+          : `Feedback from ${record.reviewer_name}`;
       form.dataset.quietReset = 'true';
       form.reset();
-      showStatus(`${label} saved successfully.`, 'success');
+      showStatus(`${label} validated and saved to system ledger.`, 'success');
     } catch (error) {
       showStatus(`Unable to save this record in browser storage: ${error.message}`, 'error');
     }
   });
+}
+
+function revalidatePairedControls(form, control) {
+  if (form.id === 'product-form' && (control.name === 'price' || control.name === 'unit_cost')) {
+    if (form.elements.unit_cost.value !== '') {
+      ValidationRules.validateControl(form.elements.unit_cost);
+    }
+  }
+  if (form.id === 'checkout-form') {
+    if (['selected_beverage', 'order_qty', 'discount_type'].includes(control.name) && form.elements.amount_tendered.value !== '') {
+      ValidationRules.validateControl(form.elements.amount_tendered);
+    }
+    if (control.name === 'discount_type') {
+      if (form.elements.discount_type.value === 'None') {
+        ValidationRules.clearFieldError(form.elements.discount_id_number);
+      } else if (form.dataset.submitted === 'true') {
+        ValidationRules.validateControl(form.elements.discount_id_number);
+      }
+    }
+  }
+  if (form.id === 'filter-form') {
+    if ((control.name === 'date_from' || control.name === 'date_to') && form.elements.date_to.value !== '') {
+      ValidationRules.validateControl(form.elements.date_to);
+    }
+    if ((control.name === 'price_min' || control.name === 'price_max') && form.elements.price_max.value !== '') {
+      ValidationRules.validateControl(form.elements.price_max);
+    }
+  }
 }
 
 function attachFieldInteractions(form) {
@@ -358,18 +403,28 @@ function attachFieldInteractions(form) {
     if (!control.matches('input, select, textarea')) return;
     if (control.type === 'range') updateRangeOutput(control);
     if (control.type === 'file') updateImagePreview(control);
-    if (form.dataset.submitted === 'true') ValidationRules.clearFieldError(control);
     updateDerivedFields(form);
+    if (form.dataset.submitted === 'true' || control.getAttribute('aria-invalid') === 'true') {
+      ValidationRules.validateControl(control);
+      revalidatePairedControls(form, control);
+    }
   });
+
   form.addEventListener('change', (event) => {
     const control = event.target;
     if (!control.matches('input, select, textarea')) return;
-    if (form.dataset.submitted === 'true') ValidationRules.clearFieldError(control);
+    if (control.type === 'file') updateImagePreview(control);
     updateDerivedFields(form);
+    if (form.dataset.submitted === 'true' || control.getAttribute('aria-invalid') === 'true' || control.type === 'file') {
+      ValidationRules.validateControl(control);
+    }
+    revalidatePairedControls(form, control);
   });
+
   form.addEventListener('blur', (event) => {
     const control = event.target;
     if (!control.matches('input, select, textarea')) return;
+    if (control.type === 'range' || control.type === 'checkbox') return;
     ValidationRules.validateControl(control);
   }, true);
 }
@@ -386,11 +441,11 @@ function initializeForms() {
 }
 
 function initializeUtilities() {
-  document.getElementById('btn-fill-demo').addEventListener('click', () => {
+  document.getElementById('btn-fill-demo')?.addEventListener('click', () => {
     const activeForm = document.querySelector('.tab-panel:not([hidden]) .system-form');
     if (activeForm) fillDemo(activeForm);
   });
-  document.getElementById('btn-trigger-errors').addEventListener('click', () => {
+  document.getElementById('btn-trigger-errors')?.addEventListener('click', () => {
     const activeForm = document.querySelector('.tab-panel:not([hidden]) .system-form');
     if (activeForm) triggerErrors(activeForm);
   });
@@ -398,8 +453,6 @@ function initializeUtilities() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initializeTabs();
-  initializeForms();
-  initializeUtilities();
   setFeedbackDateLimit();
 
   try {
@@ -407,4 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (error) {
     showStatus(`Unable to load saved records from browser storage: ${error.message}`, 'error');
   }
+
+  initializeForms();
+  initializeUtilities();
 });

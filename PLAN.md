@@ -15,7 +15,7 @@
   1. `product_name` (Text) — Product name (min 3 chars, max 60 chars)
   2. `product_sku` (Text) — SKU format regex: `^PRD-[A-Z]{3}-\d{3}$` (e.g., `PRD-ESP-001`)
   3. `category` (Dropdown / Select) — Espresso, Brewed Coffee, Cold Brew, Pastry, Seasonal
-  4. `price` (Number) — Base selling price in PHP (₱20 to ₱1000)
+  4. `price` (Number) — Base selling price in PHP (PHP 20 to PHP 1,500)
   5. `cost` (Number) — Raw cost in PHP (must be less than price)
   6. `prep_time` (Slider / Range) — Preparation time in minutes (1–20 min) with live badge
   7. `temperature` (Radio Group) — Serving type: *Hot Only*, *Iced Only*, or *Both Available*
@@ -104,9 +104,9 @@ form-controls-alfonso-brew/
 ## 3. Step-by-Step Milestones
 
 1. **Step 1: Planning & Form Selection** *(Done — confirmed complete)*
-2. **Step 2: Semantic HTML Form Architecture**
+2. **Step 2: Semantic HTML Form Architecture** *(Done)*
 3. **Step 3: Responsive CSS & Alfonso Brew Coffee Theme** *(Done)*
-4. **Step 4: JavaScript Validation Engine & Live Data Handling**
+4. **Step 4: JavaScript Validation Engine & Live Data Handling** *(Done — branch `formcontrolv1`)*
 5. **Step 5: Accessibility Verification & Screenshot Capture**
 6. **Step 6: PDF Documentation & Git Commit**
 
@@ -171,3 +171,14 @@ Controls should fit the layout, inherit the project typography, and retain usabl
 * The layout works at the specified phone, tablet, and desktop widths without page-level horizontal scrolling or clipped content.
 * CSS changes use the structure and state hooks from the other milestones and do not alter form structure, navigation behavior, validation, or data handling.
 * Step 5 remains responsible for formal accessibility verification; Step 3 must preserve visible focus styling and must not remove browser affordances.
+
+---
+
+### Step 4: JavaScript Validation Engine & Live Data Handling — Implementation Breakdown
+
+**Goal:** Complete client-side validation, accessible error and valid state feedback, cross-field constraints, seed data initialization, and persistent system data handling across all four forms on branch `formcontrolv1`.
+
+**Scope**
+* `js/validation.js` — Native HTML5 constraint checks, custom pattern messages, cross-field validation rules, `.is-valid` / `.is-invalid` / `aria-invalid` state management, and automatic focus on the first invalid control.
+* `js/data-handler.js` — Default Alfonso Brew seed records (`localStorage`), live ledger rendering, individual item removal, POS menu item synchronization (`#chk-item`), and multi-criteria filtering/sorting (`name-asc`, `price-asc`, `price-desc`, `margin-desc`).
+* `js/app.js` — Accessible keyboard tab navigation (`ArrowLeft`, `ArrowRight`, `Home`, `End`), live range output badges, textarea character counter, dynamic POS subtotal/discount/net calculations, conditional discount ID enforcement, image file preview, and evaluation utilities (`Fill Sample Data` and `Test Error States`).
