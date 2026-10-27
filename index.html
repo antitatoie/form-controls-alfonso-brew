@@ -3,31 +3,1201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alfonso Brew — UI Form Controls Portal</title>
+  <title>Alfonso Brew — POS &amp; Cafe Management UI Form Controls</title>
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/forms.css">
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main form content</a>
+
   <header class="site-header">
     <div class="header-container">
-      <img src="assets/logo.svg" alt="Alfonso Brew Logo" class="brand-logo" width="48" height="48">
-      <div>
-        <h1 class="brand-title">Alfonso Brew</h1>
-        <p class="brand-tagline">POS & Cafe Management System — UI Form Controls</p>
+      <div class="brand-identity">
+        <img src="assets/logo.svg" alt="Alfonso Brew Logo" class="brand-logo" width="52" height="52">
+        <div>
+          <h1 class="brand-title">Alfonso Brew</h1>
+          <p class="brand-tagline">POS &amp; Cafe Management System — User Interface Form Controls</p>
+        </div>
+      </div>
+      <div class="header-actions" aria-label="Evaluation Utilities">
+        <button type="button" id="btn-fill-demo" class="btn btn-outline btn-sm" title="Populate active form with sample valid data">
+          Fill Sample Data
+        </button>
+        <button type="button" id="btn-trigger-errors" class="btn btn-outline-danger btn-sm" title="Trigger validation errors on active form for screenshot verification">
+          Test Error States
+        </button>
       </div>
     </div>
   </header>
 
   <main id="main-content" class="main-container">
-    <nav class="form-tabs" aria-label="Form Sections">
-      <!-- Tabs will be rendered here -->
+    <!-- Accessible Tab Navigation -->
+    <nav class="form-tabs-nav" aria-label="System Forms Navigation">
+      <div class="form-tabs" role="tablist" aria-orientation="horizontal">
+        <button
+          type="button"
+          role="tab"
+          id="tab-btn-product"
+          class="tab-btn active"
+          aria-selected="true"
+          aria-controls="panel-product"
+          data-target="panel-product"
+          tabindex="0">
+          <span class="tab-badge">Major Form 1</span>
+          <span class="tab-title">Product &amp; Recipe Entry</span>
+        </button>
+
+        <button
+          type="button"
+          role="tab"
+          id="tab-btn-checkout"
+          class="tab-btn"
+          aria-selected="false"
+          aria-controls="panel-checkout"
+          data-target="panel-checkout"
+          tabindex="-1">
+          <span class="tab-badge">Major Form 2</span>
+          <span class="tab-title">POS Order &amp; Checkout</span>
+        </button>
+
+        <button
+          type="button"
+          role="tab"
+          id="tab-btn-feedback"
+          class="tab-btn"
+          aria-selected="false"
+          aria-controls="panel-feedback"
+          data-target="panel-feedback"
+          tabindex="-1">
+          <span class="tab-badge">Supporting Form 1</span>
+          <span class="tab-title">Customer Quality Feedback</span>
+        </button>
+
+        <button
+          type="button"
+          role="tab"
+          id="tab-btn-filter"
+          class="tab-btn"
+          aria-selected="false"
+          aria-controls="panel-filter"
+          data-target="panel-filter"
+          tabindex="-1">
+          <span class="tab-badge">Supporting Form 2</span>
+          <span class="tab-title">Inventory &amp; Audit Filter</span>
+        </button>
+      </div>
     </nav>
 
-    <div class="tab-content-container">
-      <!-- Forms will be rendered here -->
+    <!-- Status Notification Banner -->
+    <div id="global-status-banner" class="status-banner" role="status" aria-live="polite" hidden></div>
+
+    <div class="tab-panels-wrapper">
+
+      <!-- ====================================================================
+           MAJOR FORM 1: PRODUCT & RECIPE CATALOG MANAGEMENT (12 Controls)
+           ==================================================================== -->
+      <section
+        id="panel-product"
+        class="tab-panel active"
+        role="tabpanel"
+        aria-labelledby="tab-btn-product">
+
+        <div class="panel-grid">
+          <div class="form-card">
+            <div class="form-card-header">
+              <div>
+                <span class="section-tag">Major Form 1 — Inventory &amp; Menu Module</span>
+                <h2 class="form-title">Add / Edit Product &amp; Recipe Item</h2>
+                <p class="form-subtitle">Register new beverages, coffee beans, or bakery items into the Alfonso Brew POS catalog.</p>
+              </div>
+              <span class="control-count-badge">12 Form Controls</span>
+            </div>
+
+            <form id="product-form" class="system-form" novalidate>
+              <!-- Control 1: Hidden Field -->
+              <input type="hidden" id="prod-id" name="product_id" value="PRD-2026-001">
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">1. Product Identification &amp; Classification</legend>
+
+                <div class="form-row two-col">
+                  <!-- Control 2: Textbox (Product Name) -->
+                  <div class="form-group">
+                    <label for="prod-name" class="form-label">
+                      Product Name <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="prod-name"
+                      name="product_name"
+                      class="form-control"
+                      placeholder="e.g., Alfonso Signature Spanish Latte"
+                      required
+                      minlength="3"
+                      maxlength="60"
+                      aria-required="true"
+                      aria-describedby="prod-name-hint prod-name-error">
+                    <small id="prod-name-hint" class="form-hint">Enter the official menu display name (3 to 60 characters).</small>
+                    <div id="prod-name-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 3: Textbox with Pattern (Product SKU) -->
+                  <div class="form-group">
+                    <label for="prod-sku" class="form-label">
+                      Stock Keeping Unit (SKU) <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="prod-sku"
+                      name="product_sku"
+                      class="form-control"
+                      placeholder="PRD-ESP-001"
+                      required
+                      pattern="^PRD-[A-Z]{3}-\d{3}$"
+                      aria-required="true"
+                      aria-describedby="prod-sku-hint prod-sku-error">
+                    <small id="prod-sku-hint" class="form-hint">Required format: PRD-XXX-000 (e.g., PRD-ESP-001, PRD-PST-012).</small>
+                    <div id="prod-sku-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+
+                <!-- Control 4: Dropdown Select (Category) -->
+                <div class="form-group">
+                  <label for="prod-category" class="form-label">
+                    Menu Category <span class="required-badge" aria-hidden="true">*</span>
+                  </label>
+                  <select
+                    id="prod-category"
+                    name="category"
+                    class="form-control"
+                    required
+                    aria-required="true"
+                    aria-describedby="prod-category-hint prod-category-error">
+                    <option value="">-- Select a Menu Category --</option>
+                    <option value="Espresso">Espresso Based</option>
+                    <option value="Brewed Coffee">Manual &amp; Brewed Coffee</option>
+                    <option value="Cold Brew">Signature Cold Brew</option>
+                    <option value="Non-Coffee">Non-Coffee &amp; Matcha</option>
+                    <option value="Pastry">Artisanal Pastry &amp; Bakery</option>
+                    <option value="Seasonal">Seasonal Barista Specials</option>
+                  </select>
+                  <small id="prod-category-hint" class="form-hint">Determines where the item appears on the POS cashier screen.</small>
+                  <div id="prod-category-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+              </fieldset>
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">2. Pricing, Costing &amp; Preparation</legend>
+
+                <div class="form-row two-col">
+                  <!-- Control 5: Number Input (Selling Price) -->
+                  <div class="form-group">
+                    <label for="prod-price" class="form-label">
+                      Selling Price (PHP) <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="prod-price"
+                      name="price"
+                      class="form-control"
+                      placeholder="155.00"
+                      required
+                      min="20"
+                      max="1500"
+                      step="0.25"
+                      aria-required="true"
+                      aria-describedby="prod-price-hint prod-price-error">
+                    <small id="prod-price-hint" class="form-hint">Valid range: PHP 20.00 to PHP 1,500.00.</small>
+                    <div id="prod-price-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 6: Number Input (Unit Cost) -->
+                  <div class="form-group">
+                    <label for="prod-cost" class="form-label">
+                      Recipe Unit Cost (PHP) <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="prod-cost"
+                      name="unit_cost"
+                      class="form-control"
+                      placeholder="52.50"
+                      required
+                      min="5"
+                      max="1200"
+                      step="0.25"
+                      aria-required="true"
+                      aria-describedby="prod-cost-hint prod-cost-error">
+                    <small id="prod-cost-hint" class="form-hint">Raw ingredient cost; must be lower than Selling Price.</small>
+                    <div id="prod-cost-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+
+                <!-- Control 7: Slider / Range Input (Prep Time) -->
+                <div class="form-group">
+                  <div class="slider-header">
+                    <label for="prod-prep-time" class="form-label">
+                      Target Barista Preparation Time
+                    </label>
+                    <output id="prod-prep-output" for="prod-prep-time" class="range-badge">4 mins</output>
+                  </div>
+                  <input
+                    type="range"
+                    id="prod-prep-time"
+                    name="prep_time"
+                    class="form-range"
+                    min="1"
+                    max="20"
+                    step="1"
+                    value="4"
+                    aria-describedby="prod-prep-hint">
+                  <small id="prod-prep-hint" class="form-hint">Slide to set estimated preparation time from 1 minute to 20 minutes.</small>
+                </div>
+              </fieldset>
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">3. Serving Configuration &amp; Media</legend>
+
+                <!-- Control 8: Radio Button Group (Serving Temperature) -->
+                <div class="form-group" role="radiogroup" aria-labelledby="temp-group-label" aria-describedby="prod-temp-hint prod-temp-error">
+                  <span id="temp-group-label" class="form-label">
+                    Serving Variant Availability <span class="required-badge" aria-hidden="true">*</span>
+                  </span>
+                  <div class="choice-group horizontal">
+                    <label class="choice-label" for="temp-hot">
+                      <input type="radio" id="temp-hot" name="serving_temp" value="Hot Only" required>
+                      <span>Hot Only</span>
+                    </label>
+                    <label class="choice-label" for="temp-iced">
+                      <input type="radio" id="temp-iced" name="serving_temp" value="Iced Only">
+                      <span>Iced Only</span>
+                    </label>
+                    <label class="choice-label" for="temp-both">
+                      <input type="radio" id="temp-both" name="serving_temp" value="Hot and Iced">
+                      <span>Both Hot &amp; Iced</span>
+                    </label>
+                  </div>
+                  <small id="prod-temp-hint" class="form-hint">Choose how cashiers can ring up this item at the counter.</small>
+                  <div id="prod-temp-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 9: Checkbox Group (Allowed Add-ons) -->
+                <div class="form-group" role="group" aria-labelledby="addons-group-label" aria-describedby="prod-addons-hint">
+                  <span id="addons-group-label" class="form-label">Compatible Modifiers &amp; Add-ons</span>
+                  <div class="choice-group grid-choices">
+                    <label class="choice-label" for="addon-shot">
+                      <input type="checkbox" id="addon-shot" name="addons" value="Extra Espresso Shot">
+                      <span>Extra Espresso Shot (+PHP 35)</span>
+                    </label>
+                    <label class="choice-label" for="addon-oat">
+                      <input type="checkbox" id="addon-oat" name="addons" value="Oat Milk Sub">
+                      <span>Oat Milk Substitute (+PHP 45)</span>
+                    </label>
+                    <label class="choice-label" for="addon-vanilla">
+                      <input type="checkbox" id="addon-vanilla" name="addons" value="Vanilla Bean Syrup">
+                      <span>Vanilla Bean Syrup (+PHP 25)</span>
+                    </label>
+                    <label class="choice-label" for="addon-caramel">
+                      <input type="checkbox" id="addon-caramel" name="addons" value="Caramel Drizzle">
+                      <span>Caramel Drizzle (+PHP 25)</span>
+                    </label>
+                  </div>
+                  <small id="prod-addons-hint" class="form-hint">Select all optional customizations permitted for this item.</small>
+                </div>
+
+                <!-- Control 10: File Upload (Product Image) -->
+                <div class="form-group">
+                  <label for="prod-image" class="form-label">Product Display Thumbnail</label>
+                  <input
+                    type="file"
+                    id="prod-image"
+                    name="product_image"
+                    class="form-control file-input"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    aria-describedby="prod-image-hint prod-image-error">
+                  <small id="prod-image-hint" class="form-hint">Accepted image formats: .jpg, .png, or .webp (maximum 2 MB).</small>
+                  <div id="prod-image-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 11: Textarea (Tasting Notes & Allergens) -->
+                <div class="form-group">
+                  <div class="label-with-counter">
+                    <label for="prod-desc" class="form-label">
+                      Recipe Notes &amp; Allergen Information <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <span id="prod-desc-counter" class="char-counter">0 / 250</span>
+                  </div>
+                  <textarea
+                    id="prod-desc"
+                    name="description"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Describe roast profile, tasting notes, and potential allergens (e.g., dairy, tree nuts)..."
+                    required
+                    minlength="10"
+                    maxlength="250"
+                    aria-required="true"
+                    aria-describedby="prod-desc-hint prod-desc-error"></textarea>
+                  <small id="prod-desc-hint" class="form-hint">Minimum 10 characters, maximum 250 characters.</small>
+                  <div id="prod-desc-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 12: Switch / Toggle (Active POS Availability) -->
+                <div class="form-group switch-group">
+                  <label class="switch-label" for="prod-available">
+                    <input
+                      type="checkbox"
+                      id="prod-available"
+                      name="is_available"
+                      class="switch-input"
+                      role="switch"
+                      checked
+                      aria-describedby="prod-available-hint">
+                    <span class="switch-slider" aria-hidden="true"></span>
+                    <span class="switch-text">Publish Immediately to Active POS Menu</span>
+                  </label>
+                  <small id="prod-available-hint" class="form-hint">Toggle off if the item is out of stock or still in draft testing.</small>
+                </div>
+              </fieldset>
+
+              <!-- Form Action Buttons -->
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  Save Product to Catalog
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                  Reset Product Form
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Live Data Handling Ledger for Major Form 1 -->
+          <aside class="ledger-card" aria-labelledby="ledger-product-heading">
+            <div class="ledger-header">
+              <h3 id="ledger-product-heading" class="ledger-title">Live Product Catalog Ledger</h3>
+              <span id="product-count-pill" class="count-pill">0 Items</span>
+            </div>
+            <p class="ledger-desc">Submitted items are validated, processed, and stored in the system catalog below.</p>
+            <div id="product-ledger-list" class="ledger-list" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           MAJOR FORM 2: POS ORDER & CHECKOUT PROCESSING (12 Controls)
+           ==================================================================== -->
+      <section
+        id="panel-checkout"
+        class="tab-panel"
+        role="tabpanel"
+        aria-labelledby="tab-btn-checkout"
+        hidden>
+
+        <div class="panel-grid">
+          <div class="form-card">
+            <div class="form-card-header">
+              <div>
+                <span class="section-tag">Major Form 2 — Point of Sale Module</span>
+                <h2 class="form-title">Customer Order &amp; Checkout Processing</h2>
+                <p class="form-subtitle">Ring up customer beverages, apply statutory or loyalty discounts, and validate tendered payment.</p>
+              </div>
+              <span class="control-count-badge">12 Form Controls</span>
+            </div>
+
+            <form id="checkout-form" class="system-form" novalidate>
+              <!-- Control 1: Hidden Transaction Number -->
+              <input type="hidden" id="chk-tx-no" name="transaction_number" value="TXN-AB-1001">
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">1. Customer &amp; Fulfillment Details</legend>
+
+                <div class="form-row two-col">
+                  <!-- Control 2: Textbox (Customer Name) -->
+                  <div class="form-group">
+                    <label for="chk-name" class="form-label">
+                      Customer Full Name <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="chk-name"
+                      name="customer_name"
+                      class="form-control"
+                      placeholder="e.g., Juan Dela Cruz"
+                      required
+                      minlength="2"
+                      maxlength="80"
+                      aria-required="true"
+                      aria-describedby="chk-name-hint chk-name-error">
+                    <small id="chk-name-hint" class="form-hint">Name for cup callout and official receipt.</small>
+                    <div id="chk-name-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 3: Email Input (Customer Email) -->
+                  <div class="form-group">
+                    <label for="chk-email" class="form-label">
+                      E-Receipt Email Address <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="chk-email"
+                      name="customer_email"
+                      class="form-control"
+                      placeholder="juan.delacruz@example.com"
+                      required
+                      aria-required="true"
+                      aria-describedby="chk-email-hint chk-email-error">
+                    <small id="chk-email-hint" class="form-hint">Must be a valid email address format (name@domain.com).</small>
+                    <div id="chk-email-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+
+                <div class="form-row three-col">
+                  <!-- Control 4: Tel Input (Mobile Phone) -->
+                  <div class="form-group">
+                    <label for="chk-phone" class="form-label">
+                      Mobile Number <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="chk-phone"
+                      name="customer_phone"
+                      class="form-control"
+                      placeholder="0917-123-4567"
+                      required
+                      pattern="^(09|\+639)\d{2}-?\d{3}-?\d{4}$"
+                      aria-required="true"
+                      aria-describedby="chk-phone-hint chk-phone-error">
+                    <small id="chk-phone-hint" class="form-hint">Format: 09XX-XXX-XXXX or +639XXXXXXXXX.</small>
+                    <div id="chk-phone-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 5: Dropdown Select (Fulfillment Type) -->
+                  <div class="form-group">
+                    <label for="chk-order-type" class="form-label">
+                      Service Type <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <select
+                      id="chk-order-type"
+                      name="order_type"
+                      class="form-control"
+                      required
+                      aria-required="true"
+                      aria-describedby="chk-order-type-hint chk-order-type-error">
+                      <option value="">-- Select Service --</option>
+                      <option value="Dine-In">Dine-In (Ceramic Cup)</option>
+                      <option value="Takeout">Takeout (Sealed To-Go Cup)</option>
+                      <option value="Curbside Pickup">Curbside Pickup</option>
+                    </select>
+                    <small id="chk-order-type-hint" class="form-hint">Select how the order will be served.</small>
+                    <div id="chk-order-type-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 6: Time Input (Target Pickup/Serve Time) -->
+                  <div class="form-group">
+                    <label for="chk-pickup-time" class="form-label">
+                      Serving / Pickup Time <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="time"
+                      id="chk-pickup-time"
+                      name="pickup_time"
+                      class="form-control"
+                      required
+                      min="07:00"
+                      max="21:00"
+                      value="10:30"
+                      aria-required="true"
+                      aria-describedby="chk-pickup-time-hint chk-pickup-time-error">
+                    <small id="chk-pickup-time-hint" class="form-hint">Store operating hours: 07:00 AM to 09:00 PM.</small>
+                    <div id="chk-pickup-time-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">2. Order Selection, Discounts &amp; Payment</legend>
+
+                <div class="form-row two-col">
+                  <!-- Control 7: Dropdown Select (Ordered Beverage/Item) -->
+                  <div class="form-group">
+                    <label for="chk-item" class="form-label">
+                      Ordered Menu Item <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <select
+                      id="chk-item"
+                      name="selected_beverage"
+                      class="form-control"
+                      required
+                      aria-required="true"
+                      aria-describedby="chk-item-hint chk-item-error">
+                      <option value="" data-price="0">-- Choose Menu Item --</option>
+                      <option value="Signature Spanish Latte" data-price="155">Signature Spanish Latte — PHP 155.00</option>
+                      <option value="Alfonso Cold Brew" data-price="140">Alfonso Cold Brew — PHP 140.00</option>
+                      <option value="Pour Over Cavite Barako" data-price="130">Pour Over Cavite Barako — PHP 130.00</option>
+                      <option value="Dirty Matcha Fusion" data-price="170">Dirty Matcha Fusion — PHP 170.00</option>
+                      <option value="Artisanal Butter Croissant" data-price="110">Artisanal Butter Croissant — PHP 110.00</option>
+                    </select>
+                    <small id="chk-item-hint" class="form-hint">Select item to calculate gross subtotal.</small>
+                    <div id="chk-item-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 8: Number Input (Quantity) -->
+                  <div class="form-group">
+                    <label for="chk-qty" class="form-label">
+                      Quantity <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="chk-qty"
+                      name="order_qty"
+                      class="form-control"
+                      required
+                      min="1"
+                      max="50"
+                      step="1"
+                      value="1"
+                      aria-required="true"
+                      aria-describedby="chk-qty-hint chk-qty-error">
+                    <small id="chk-qty-hint" class="form-hint">Maximum 50 items per single POS counter order.</small>
+                    <div id="chk-qty-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+
+                <div class="form-row two-col">
+                  <!-- Control 9: Dropdown Select (Discount Privilege) -->
+                  <div class="form-group">
+                    <label for="chk-discount" class="form-label">Discount Category</label>
+                    <select
+                      id="chk-discount"
+                      name="discount_type"
+                      class="form-control"
+                      aria-describedby="chk-discount-hint">
+                      <option value="None" data-rate="0">No Discount (Regular Price)</option>
+                      <option value="Senior Citizen (20%)" data-rate="0.20">Senior Citizen — 20% Off</option>
+                      <option value="PWD (20%)" data-rate="0.20">Person with Disability (PWD) — 20% Off</option>
+                      <option value="Alfonso Brew Club (10%)" data-rate="0.10">Alfonso Brew Club — 10% Off</option>
+                    </select>
+                    <small id="chk-discount-hint" class="form-hint">Selecting a discount requires a valid ID number on the right.</small>
+                  </div>
+
+                  <!-- Control 10: Textbox (Conditional Discount ID Number) -->
+                  <div class="form-group">
+                    <label for="chk-discount-id" class="form-label">
+                      Discount / Privilege ID Number <span id="discount-id-req" class="required-badge" hidden>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="chk-discount-id"
+                      name="discount_id_number"
+                      class="form-control"
+                      placeholder="OSCA-12345 or PWD-8890"
+                      pattern="^[A-Za-z0-9-]{4,18}$"
+                      aria-describedby="chk-discount-id-hint chk-discount-id-error">
+                    <small id="chk-discount-id-hint" class="form-hint">Required when Senior, PWD, or Club discount is applied (4–18 chars).</small>
+                    <div id="chk-discount-id-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+
+                <!-- Dynamic Computed Summary Box -->
+                <div class="order-summary-strip" aria-live="polite">
+                  <div>
+                    <span class="summary-label">Gross Subtotal:</span>
+                    <strong id="summary-gross">PHP 0.00</strong>
+                  </div>
+                  <div>
+                    <span class="summary-label">Discount Deducted:</span>
+                    <strong id="summary-discount">PHP 0.00</strong>
+                  </div>
+                  <div>
+                    <span class="summary-label">Net Amount Due:</span>
+                    <strong id="summary-net" class="net-payable">PHP 0.00</strong>
+                  </div>
+                </div>
+
+                <!-- Control 11: Radio Group (Payment Method) -->
+                <div class="form-group" role="radiogroup" aria-labelledby="pay-method-label" aria-describedby="chk-pay-hint chk-pay-error">
+                  <span id="pay-method-label" class="form-label">
+                    Payment Method <span class="required-badge" aria-hidden="true">*</span>
+                  </span>
+                  <div class="choice-group horizontal">
+                    <label class="choice-label" for="pay-cash">
+                      <input type="radio" id="pay-cash" name="payment_method" value="Cash" required>
+                      <span>Cash</span>
+                    </label>
+                    <label class="choice-label" for="pay-gcash">
+                      <input type="radio" id="pay-gcash" name="payment_method" value="GCash">
+                      <span>GCash</span>
+                    </label>
+                    <label class="choice-label" for="pay-maya">
+                      <input type="radio" id="pay-maya" name="payment_method" value="Maya">
+                      <span>Maya</span>
+                    </label>
+                    <label class="choice-label" for="pay-card">
+                      <input type="radio" id="pay-card" name="payment_method" value="Credit/Debit Card">
+                      <span>Credit / Debit Card</span>
+                    </label>
+                  </div>
+                  <small id="chk-pay-hint" class="form-hint">Choose tender type presented by customer.</small>
+                  <div id="chk-pay-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 12: Number Input (Amount Tendered) -->
+                <div class="form-group">
+                  <label for="chk-tendered" class="form-label">
+                    Amount Tendered (PHP) <span class="required-badge" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    id="chk-tendered"
+                    name="amount_tendered"
+                    class="form-control"
+                    placeholder="200.00"
+                    required
+                    min="1"
+                    max="50000"
+                    step="0.25"
+                    aria-required="true"
+                    aria-describedby="chk-tendered-hint chk-tendered-error">
+                  <small id="chk-tendered-hint" class="form-hint">Must be greater than or equal to the Net Amount Due.</small>
+                  <div id="chk-tendered-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 13: Textarea (Special Brewing Instructions) -->
+                <div class="form-group">
+                  <label for="chk-notes" class="form-label">Special Brewing / Dietary Instructions</label>
+                  <textarea
+                    id="chk-notes"
+                    name="special_instructions"
+                    class="form-control"
+                    rows="2"
+                    maxlength="200"
+                    placeholder="e.g., Less ice, 50% sweetness level, separate cream..."
+                    aria-describedby="chk-notes-hint"></textarea>
+                  <small id="chk-notes-hint" class="form-hint">Optional notes printed on the barista cup sticker (max 200 chars).</small>
+                </div>
+
+                <!-- Control 14: Checkbox (Loyalty Program Enrollment) -->
+                <div class="form-group">
+                  <label class="choice-label single-checkbox" for="chk-loyalty">
+                    <input type="checkbox" id="chk-loyalty" name="loyalty_optin" value="Enrolled">
+                    <span>Enroll customer in Alfonso Brew Perks &amp; Stamp Rewards Program</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  Process Order and Issue Receipt
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                  Clear Order Form
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Live Data Handling Ledger for Major Form 2 -->
+          <aside class="ledger-card" aria-labelledby="ledger-checkout-heading">
+            <div class="ledger-header">
+              <h3 id="ledger-checkout-heading" class="ledger-title">Processed POS Transactions</h3>
+              <span id="checkout-count-pill" class="count-pill">0 Orders</span>
+            </div>
+            <p class="ledger-desc">Completed sales transactions with calculated net totals and change due.</p>
+            <div id="checkout-ledger-list" class="ledger-list" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SUPPORTING FORM 1: CUSTOMER QUALITY FEEDBACK & REVIEW (10 Controls)
+           ==================================================================== -->
+      <section
+        id="panel-feedback"
+        class="tab-panel"
+        role="tabpanel"
+        aria-labelledby="tab-btn-feedback"
+        hidden>
+
+        <div class="panel-grid">
+          <div class="form-card">
+            <div class="form-card-header">
+              <div>
+                <span class="section-tag">Supporting Form 1 — Customer Relations Module</span>
+                <h2 class="form-title">Customer Quality Feedback &amp; Tasting Review</h2>
+                <p class="form-subtitle">Log customer satisfaction ratings on beverage quality, barista service, and store ambiance.</p>
+              </div>
+              <span class="control-count-badge">10 Form Controls</span>
+            </div>
+
+            <form id="feedback-form" class="system-form" novalidate>
+              <!-- Control 1: Hidden Feedback ID -->
+              <input type="hidden" id="fb-id" name="feedback_id" value="FB-2026-01">
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">1. Guest &amp; Visit Information</legend>
+
+                <div class="form-row two-col">
+                  <!-- Control 2: Textbox (Reviewer Name) -->
+                  <div class="form-group">
+                    <label for="fb-name" class="form-label">
+                      Guest Name <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="fb-name"
+                      name="reviewer_name"
+                      class="form-control"
+                      placeholder="e.g., Maria Clara Santos"
+                      required
+                      minlength="2"
+                      maxlength="60"
+                      aria-required="true"
+                      aria-describedby="fb-name-hint fb-name-error">
+                    <small id="fb-name-hint" class="form-hint">Enter your name (minimum 2 characters).</small>
+                    <div id="fb-name-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 3: Email Input (Reviewer Email) -->
+                  <div class="form-group">
+                    <label for="fb-email" class="form-label">
+                      Contact Email <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="fb-email"
+                      name="reviewer_email"
+                      class="form-control"
+                      placeholder="maria.santos@email.com"
+                      required
+                      aria-required="true"
+                      aria-describedby="fb-email-hint fb-email-error">
+                    <small id="fb-email-hint" class="form-hint">Used to verify visit and send reward voucher.</small>
+                    <div id="fb-email-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+
+                <div class="form-row two-col">
+                  <!-- Control 4: Dropdown Select (Branch Visited) -->
+                  <div class="form-group">
+                    <label for="fb-branch" class="form-label">
+                      Alfonso Brew Branch Visited <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <select
+                      id="fb-branch"
+                      name="branch_visited"
+                      class="form-control"
+                      required
+                      aria-required="true"
+                      aria-describedby="fb-branch-hint fb-branch-error">
+                      <option value="">-- Select Branch Location --</option>
+                      <option value="Alfonso Town Proper Flagship">Alfonso Town Proper Flagship</option>
+                      <option value="Tagaytay Ridge Express">Tagaytay Ridge Express</option>
+                      <option value="Silang Roastery &amp; Lounge">Silang Roastery &amp; Lounge</option>
+                    </select>
+                    <small id="fb-branch-hint" class="form-hint">Specify which branch handled your order.</small>
+                    <div id="fb-branch-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Control 5: Date Input (Date of Visit) -->
+                  <div class="form-group">
+                    <label for="fb-date" class="form-label">
+                      Date of Visit <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="fb-date"
+                      name="visit_date"
+                      class="form-control"
+                      required
+                      aria-required="true"
+                      aria-describedby="fb-date-hint fb-date-error">
+                    <small id="fb-date-hint" class="form-hint">Cannot be a future date.</small>
+                    <div id="fb-date-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">2. Quality Ratings &amp; Experience</legend>
+
+                <!-- Control 6: Radio Button Group (Overall Rating) -->
+                <div class="form-group" role="radiogroup" aria-labelledby="fb-rating-label" aria-describedby="fb-rating-hint fb-rating-error">
+                  <span id="fb-rating-label" class="form-label">
+                    Overall Beverage &amp; Service Rating <span class="required-badge" aria-hidden="true">*</span>
+                  </span>
+                  <div class="choice-group horizontal">
+                    <label class="choice-label" for="rate-5">
+                      <input type="radio" id="rate-5" name="overall_rating" value="5 - Exceptional" required>
+                      <span>5 - Exceptional</span>
+                    </label>
+                    <label class="choice-label" for="rate-4">
+                      <input type="radio" id="rate-4" name="overall_rating" value="4 - Good">
+                      <span>4 - Good</span>
+                    </label>
+                    <label class="choice-label" for="rate-3">
+                      <input type="radio" id="rate-3" name="overall_rating" value="3 - Satisfactory">
+                      <span>3 - Satisfactory</span>
+                    </label>
+                    <label class="choice-label" for="rate-2">
+                      <input type="radio" id="rate-2" name="overall_rating" value="2 - Needs Work">
+                      <span>2 - Needs Work</span>
+                    </label>
+                    <label class="choice-label" for="rate-1">
+                      <input type="radio" id="rate-1" name="overall_rating" value="1 - Poor">
+                      <span>1 - Poor</span>
+                    </label>
+                  </div>
+                  <small id="fb-rating-hint" class="form-hint">Select one rating score that summarizes your visit.</small>
+                  <div id="fb-rating-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 7: Checkbox Group (Items Ordered) -->
+                <div class="form-group" role="group" aria-labelledby="fb-items-label" aria-describedby="fb-items-hint fb-items-error">
+                  <span id="fb-items-label" class="form-label">
+                    Product Categories Sampled <span class="required-badge" aria-hidden="true">*</span>
+                  </span>
+                  <div class="choice-group grid-choices">
+                    <label class="choice-label" for="tried-espresso">
+                      <input type="checkbox" id="tried-espresso" name="items_tried" value="Espresso Beverages">
+                      <span>Espresso Beverages</span>
+                    </label>
+                    <label class="choice-label" for="tried-pourover">
+                      <input type="checkbox" id="tried-pourover" name="items_tried" value="Manual Pour Over">
+                      <span>Manual Pour Over</span>
+                    </label>
+                    <label class="choice-label" for="tried-coldbrew">
+                      <input type="checkbox" id="tried-coldbrew" name="items_tried" value="Signature Cold Brew">
+                      <span>Signature Cold Brew</span>
+                    </label>
+                    <label class="choice-label" for="tried-pastry">
+                      <input type="checkbox" id="tried-pastry" name="items_tried" value="Artisanal Pastries">
+                      <span>Artisanal Pastries</span>
+                    </label>
+                  </div>
+                  <small id="fb-items-hint" class="form-hint">Check at least one product category ordered during your visit.</small>
+                  <div id="fb-items-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 8: Slider / Range (Ambiance Score) -->
+                <div class="form-group">
+                  <div class="slider-header">
+                    <label for="fb-ambiance" class="form-label">Cafe Cleanliness &amp; Ambiance Score</label>
+                    <output id="fb-ambiance-output" for="fb-ambiance" class="range-badge">9 / 10</output>
+                  </div>
+                  <input
+                    type="range"
+                    id="fb-ambiance"
+                    name="ambiance_score"
+                    class="form-range"
+                    min="1"
+                    max="10"
+                    step="1"
+                    value="9"
+                    aria-describedby="fb-ambiance-hint">
+                  <small id="fb-ambiance-hint" class="form-hint">Rate the seating comfort, Wi-Fi, and cleanliness from 1 (lowest) to 10 (highest).</small>
+                </div>
+
+                <!-- Control 9: Textarea (Detailed Review Comments) -->
+                <div class="form-group">
+                  <label for="fb-comments" class="form-label">
+                    Detailed Tasting &amp; Service Comments <span class="required-badge" aria-hidden="true">*</span>
+                  </label>
+                  <textarea
+                    id="fb-comments"
+                    name="review_comments"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Share what you enjoyed most or how our baristas can improve..."
+                    required
+                    minlength="15"
+                    maxlength="400"
+                    aria-required="true"
+                    aria-describedby="fb-comments-hint fb-comments-error"></textarea>
+                  <small id="fb-comments-hint" class="form-hint">Please provide at least 15 characters of constructive feedback.</small>
+                  <div id="fb-comments-error" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <!-- Control 10: Switch / Toggle (Follow-up Consent) -->
+                <div class="form-group switch-group">
+                  <label class="switch-label" for="fb-followup">
+                    <input
+                      type="checkbox"
+                      id="fb-followup"
+                      name="allow_followup"
+                      class="switch-input"
+                      role="switch"
+                      checked>
+                    <span class="switch-slider" aria-hidden="true"></span>
+                    <span class="switch-text">Allow Store Manager to Contact Me Regarding This Review</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  Submit Customer Feedback
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                  Clear Feedback Form
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Live Data Handling Ledger for Supporting Form 1 -->
+          <aside class="ledger-card" aria-labelledby="ledger-feedback-heading">
+            <div class="ledger-header">
+              <h3 id="ledger-feedback-heading" class="ledger-title">Submitted Feedback Log</h3>
+              <span id="feedback-count-pill" class="count-pill">0 Reviews</span>
+            </div>
+            <p class="ledger-desc">Customer reviews logged for quality assurance and branch evaluation.</p>
+            <div id="feedback-ledger-list" class="ledger-list" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SUPPORTING FORM 2: INVENTORY & AUDIT MULTI-FILTER (11 Controls)
+           ==================================================================== -->
+      <section
+        id="panel-filter"
+        class="tab-panel"
+        role="tabpanel"
+        aria-labelledby="tab-btn-filter"
+        hidden>
+
+        <div class="panel-grid">
+          <div class="form-card">
+            <div class="form-card-header">
+              <div>
+                <span class="section-tag">Supporting Form 2 — Audit &amp; Reporting Module</span>
+                <h2 class="form-title">Inventory &amp; Sales Audit Multi-Criteria Filter</h2>
+                <p class="form-subtitle">Query catalog items and stock records by keyword, date window, price bounds, and stock alert status.</p>
+              </div>
+              <span class="control-count-badge">11 Form Controls</span>
+            </div>
+
+            <form id="filter-form" class="system-form" novalidate>
+              <!-- Control 1: Hidden Audit Session ID -->
+              <input type="hidden" id="flt-session" name="audit_session" value="AUD-2026-10">
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">1. Search Query &amp; Date Window</legend>
+
+                <div class="form-row two-col">
+                  <!-- Control 2: Search / Text Input -->
+                  <div class="form-group">
+                    <label for="flt-keyword" class="form-label">Search Keyword or SKU</label>
+                    <input
+                      type="search"
+                      id="flt-keyword"
+                      name="search_keyword"
+                      class="form-control"
+                      placeholder="e.g., PRD-ESP, Latte, Croissant..."
+                      maxlength="50"
+                      aria-describedby="flt-keyword-hint">
+                    <small id="flt-keyword-hint" class="form-hint">Filter matching product names or SKU codes (leave blank for all).</small>
+                  </div>
+
+                  <!-- Control 3: Dropdown Select (Category Filter) -->
+                  <div class="form-group">
+                    <label for="flt-category" class="form-label">Filter by Menu Category</label>
+                    <select
+                      id="flt-category"
+                      name="audit_category"
+                      class="form-control"
+                      aria-describedby="flt-category-hint">
+                      <option value="All">All Categories</option>
+                      <option value="Espresso">Espresso Based</option>
+                      <option value="Brewed Coffee">Manual &amp; Brewed Coffee</option>
+                      <option value="Cold Brew">Signature Cold Brew</option>
+                      <option value="Non-Coffee">Non-Coffee &amp; Matcha</option>
+                      <option value="Pastry">Artisanal Pastry &amp; Bakery</option>
+                    </select>
+                    <small id="flt-category-hint" class="form-hint">Narrow audit table to a specific department.</small>
+                  </div>
+                </div>
+
+                <div class="form-row two-col">
+                  <!-- Control 4: Date Input (Start Date) -->
+                  <div class="form-group">
+                    <label for="flt-date-from" class="form-label">Audit Period Start Date</label>
+                    <input
+                      type="date"
+                      id="flt-date-from"
+                      name="date_from"
+                      class="form-control"
+                      value="2026-10-01"
+                      aria-describedby="flt-date-from-hint flt-date-error">
+                    <small id="flt-date-from-hint" class="form-hint">Beginning date of inventory movement window.</small>
+                  </div>
+
+                  <!-- Control 5: Date Input (End Date) -->
+                  <div class="form-group">
+                    <label for="flt-date-to" class="form-label">Audit Period End Date</label>
+                    <input
+                      type="date"
+                      id="flt-date-to"
+                      name="date_to"
+                      class="form-control"
+                      value="2026-10-27"
+                      aria-describedby="flt-date-to-hint flt-date-error">
+                    <small id="flt-date-to-hint" class="form-hint">Must be on or after the Start Date.</small>
+                    <div id="flt-date-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="form-fieldset">
+                <legend class="fieldset-legend">2. Price Bounds, Stock Status &amp; Auditor Verification</legend>
+
+                <div class="form-row two-col">
+                  <!-- Control 6: Number Input (Minimum Price) -->
+                  <div class="form-group">
+                    <label for="flt-price-min" class="form-label">Minimum Selling Price (PHP)</label>
+                    <input
+                      type="number"
+                      id="flt-price-min"
+                      name="price_min"
+                      class="form-control"
+                      placeholder="0.00"
+                      min="0"
+                      max="1500"
+                      step="5"
+                      value="0"
+                      aria-describedby="flt-price-min-hint flt-price-error">
+                    <small id="flt-price-min-hint" class="form-hint">Lower bound in PHP (0 to 1,500).</small>
+                  </div>
+
+                  <!-- Control 7: Number Input (Maximum Price) -->
+                  <div class="form-group">
+                    <label for="flt-price-max" class="form-label">Maximum Selling Price (PHP)</label>
+                    <input
+                      type="number"
+                      id="flt-price-max"
+                      name="price_max"
+                      class="form-control"
+                      placeholder="500.00"
+                      min="20"
+                      max="1500"
+                      step="5"
+                      value="500"
+                      aria-describedby="flt-price-max-hint flt-price-error">
+                    <small id="flt-price-max-hint" class="form-hint">Upper bound in PHP (must be &gt;= Minimum Price).</small>
+                    <div id="flt-price-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+
+                <!-- Control 8: Radio Button Group (Stock Status) -->
+                <div class="form-group" role="radiogroup" aria-labelledby="flt-stock-label">
+                  <span id="flt-stock-label" class="form-label">Availability Status Filter</span>
+                  <div class="choice-group horizontal">
+                    <label class="choice-label" for="stk-all">
+                      <input type="radio" id="stk-all" name="stock_status" value="All" checked>
+                      <span>All Catalog Items</span>
+                    </label>
+                    <label class="choice-label" for="stk-active">
+                      <input type="radio" id="stk-active" name="stock_status" value="Active Only">
+                      <span>Active on POS Only</span>
+                    </label>
+                    <label class="choice-label" for="stk-draft">
+                      <input type="radio" id="stk-draft" name="stock_status" value="Inactive/Draft">
+                      <span>Inactive / Draft Only</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Control 9: Checkbox Group (Export/Display Columns) -->
+                <div class="form-group" role="group" aria-labelledby="flt-cols-label">
+                  <span id="flt-cols-label" class="form-label">Audit Report Metrics to Display</span>
+                  <div class="choice-group grid-choices">
+                    <label class="choice-label" for="col-sku">
+                      <input type="checkbox" id="col-sku" name="visible_columns" value="SKU Code" checked>
+                      <span>SKU Code</span>
+                    </label>
+                    <label class="choice-label" for="col-cost">
+                      <input type="checkbox" id="col-cost" name="visible_columns" value="Unit Cost" checked>
+                      <span>Unit Cost</span>
+                    </label>
+                    <label class="choice-label" for="col-margin">
+                      <input type="checkbox" id="col-margin" name="visible_columns" value="Gross Margin" checked>
+                      <span>Gross Margin (%)</span>
+                    </label>
+                    <label class="choice-label" for="col-prep">
+                      <input type="checkbox" id="col-prep" name="visible_columns" value="Prep Time">
+                      <span>Prep Time</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-row two-col">
+                  <!-- Control 10: Dropdown Select (Sort Order) -->
+                  <div class="form-group">
+                    <label for="flt-sort" class="form-label">Sort Audit Results By</label>
+                    <select id="flt-sort" name="sort_by" class="form-control">
+                      <option value="name-asc">Product Name (A to Z)</option>
+                      <option value="price-asc">Selling Price (Low to High)</option>
+                      <option value="price-desc">Selling Price (High to Low)</option>
+                      <option value="margin-desc">Profit Margin (Highest First)</option>
+                    </select>
+                  </div>
+
+                  <!-- Control 11: Password Input (Staff Auditor PIN) -->
+                  <div class="form-group">
+                    <label for="flt-pin" class="form-label">
+                      Staff Auditor Authorization PIN <span class="required-badge" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      id="flt-pin"
+                      name="auditor_pin"
+                      class="form-control"
+                      placeholder="Enter 4-8 digit PIN (e.g. 1234)"
+                      required
+                      minlength="4"
+                      maxlength="8"
+                      pattern="^[0-9A-Za-z]{4,8}$"
+                      aria-required="true"
+                      aria-describedby="flt-pin-hint flt-pin-error">
+                    <small id="flt-pin-hint" class="form-hint">Alphanumeric PIN (4–8 chars) required to view cost &amp; margin audit data.</small>
+                    <div id="flt-pin-error" class="form-error" role="alert" aria-live="polite"></div>
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  Apply Audit Filters
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                  Reset Filter Criteria
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Live Data Handling Ledger for Supporting Form 2 -->
+          <aside class="ledger-card" aria-labelledby="ledger-filter-heading">
+            <div class="ledger-header">
+              <h3 id="ledger-filter-heading" class="ledger-title">Filtered Catalog Audit Results</h3>
+              <span id="filter-count-pill" class="count-pill">0 Matches</span>
+            </div>
+            <p class="ledger-desc">Live query results filtered from the Alfonso Brew product catalog.</p>
+            <div id="filter-ledger-list" class="ledger-list" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>Alfonso Brew POS &amp; Cafe Management System — Software Engineering UI Form Controls Activity</p>
+    </div>
+  </footer>
 
   <script type="module" src="js/app.js"></script>
 </body>
