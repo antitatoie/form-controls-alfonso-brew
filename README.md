@@ -7,7 +7,7 @@ This project contains the implementation of user interface form controls for the
 
 ---
 
-## ☕ Implemented Forms
+## Implemented Forms
 
 ### Major Forms (Required)
 1. **Product & Recipe Catalog Management** *(Admin / Inventory)*
@@ -23,7 +23,7 @@ This project contains the implementation of user interface form controls for the
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```
 form-controls-alfonso-brew/
@@ -47,7 +47,7 @@ form-controls-alfonso-brew/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 1. Clone the repository:
    ```bash
@@ -58,7 +58,7 @@ form-controls-alfonso-brew/
 
 ---
 
-## 📋 Features & Compliance
+## Features and Compliance
 * **Accessibility (WCAG):** Semantic `<label>` association, keyboard navigation, focus indicators, and `aria-describedby` error states.
 * **Validation:** Immediate feedback on blur, format regex enforcement, and submit prevention on invalid inputs.
 * **Data Handling:** Dynamic reflection in UI and persistent storage via `localStorage`.
