@@ -28,6 +28,5 @@ form-controls-alfonso-brew/
 ├── docs/
 │   ├── FORM_DOCUMENTATION.md    # Activity documentation for Canvas PDF export
 │   └── screenshots/             # Screenshots of form and error states
-├── PLAN.md                      # Milestone and planning reference
 └── README.md                    # Repository documentation
 ```
